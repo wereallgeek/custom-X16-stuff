@@ -9,10 +9,12 @@ param([string]$ConfigFile = "multicart.cfg")
 $ErrorActionPreference = 'Stop'
 
 # ---------------- embedded code (menu, boot stub) ----------------
-$MENU_HEX = '4C05040000A9008530A9C58531A9008532A9808533AD03048534AD04048535A9208538A9008500202006A9008501AD259F29FD8D259FAD2C9F8541AD0A80C9FFF00418205FFFAD0B80C9FFF0038D2C9FAD1880F010A200BD20809D0001E8E0B1D0F520000158A9FF8545A9008539853CAD098020D2FFAD0D80853EAD0E80853F20640620A206203F05C900F0F9C911F015C991F031C90DF00AC91BF04CC903F04880E34C8605A539186901CD00809008A9008539853C80CB853938E53CCD018090C1E63C80BDA539F00CC639A539C53CB0B1853C80ADAD008038E9018539AD008038ED0180853C809AAD0C80D0034C8604AD0F80853EAD1080853F20640620E4FFC900F0F9C959F014C9D9F010AD1180853EAD1280853F2064064C8604202905782081FF58384C47FFAD259F29FD8D259FAD299F29EF8D299FA5418D2C9F6020E4FFC900D036A9012056FFC000D02BDA49FF291C85466849FF29804A4A4A05468546A54549FF254648A5468545688908D00B8904D00A8930D009A90060A99160A91160A90D60A5390A0A186D1580853EAD16806900853FA000B13EAAC8B13E48C8B13E8543C8B13E854468853F863EA000B13E998807C8C078D0F6202905782081FF78A20020F705A5340535F00D202006E8E8E8E8E8E8E8E880EAA9008501A221BD1F079D4001CA10F7A5438D6001A5448D61014C4001BD88078530BD89078531BD8A078532BD8B078533BD8C078534BD8D078535BD8E078538BD8F07850060A000A5388501B1309132E630D00AE631D006A9C08531E601E632D00EE633A533C9C0D006A9A08533E600A534D002C635C634A5340535D0CE60A000B13EE63ED002E63F60205906C9FEF00520D2FF80F4205906C901F005C902F012602059068542205906A8A6421820F0FF80D720590685402059068542A54220D2FFC640D0F780C2A900853AA53C18653A853BAD048018653AAAAC03801820F0FFA53BC539F010AD068020D2FFA90120D2FFAD0580800EAD088020D2FFA90120D2FFAD078020D2FFAD1380853EAD1480853FA63BF00FA53E186D0280853E9002E63FCAD0F1AD02808540A000B13E20D2FFE63ED002E63FC640D0F1E63AA53ACD0180D08860A900AA9D00049D00059D00069D0007E8D0F1A2209530CA10FB85008D99A8584C0000'
+$MENU_HEX = '4C05040000A9008530A9C58531A9008532A9808533AD03048534AD04048535A9208538A9008500206106A9008501AD259F29FD8D259FAD2C9F8541AD0A80C9FFF00418205FFFAD0B80C9FFF0038D2C9FAD1880F010A200BD24809D0001E8E0B1D0F520000158AD2380F01920DEFF854220E4FFC98AF00D20DEFF38E542C93C90EF4CA405A9FF8545A9008539853CAD098020D2FFAD0D80853EAD0E80853F20A50620E306205D05C900F0F9C911F015C991F031C90DF00AC91BF04CC903F04880E34CA405A539186901CD00809008A9008539853C80CB853938E53CCD018090C1E63C80BDA539F00CC639A539C53CB0B1853C80ADAD008038E9018539AD008038ED0180853C809AAD0C80D0034CA404AD0F80853EAD1080853F20A50620E4FFC900F0F9C959F014C9D9F010AD1180853EAD1280853F20A5064CA404204705782081FF58384C47FFAD259F29FD8D259FAD299F29EF8D299FA5418D2C9F6020E4FFC900D036A9012056FFC000D02BDA49FF291C85466849FF29804A4A4A05468546A54549FF254648A5468545688908D00B8904D00A8930D009A90060A99160A91160A90D60A5390A0A186D1580853EAD16806900853FA000B13EAAC8B13E48C8B13E8543C8B13E854468853F863EA000B13E999007C8C070D0F6AD2080F011853FAD1F80853EA07FB13E9900018810F8204705782081FF78A200203406A5340535F016A53A10052000018003206106E8E8E8E8E8E8E8E880E1A9008501A221BD60079D4001CA10F7A5438D6001A5448D61014C4001BD90078530BD91078531BD92078532BD93078533BD94078534BD95078535BD96078538BD9707853A297F850060A000A5388501B1309132E630D00AE631D006A9C08531E601E632D00EE633A533C9C0D006A9A08533E600A534D002C635C634A5340535D0CE60A000B13EE63ED002E63F60209A06C9FEF00520D2FF80F4209A06C901F005C902F01260209A068542209A06A8A6421820F0FF80D7209A068540209A068542A54220D2FFC640D0F780C2A900853AA53C18653A853BAD048018653AAAAC03801820F0FFA53BC539F010AD068020D2FFA90120D2FFAD0580800EAD088020D2FFA90120D2FFAD078020D2FFAD1380853EAD1480853FA63BF00FA53E186D0280853E9002E63FCAD0F1AD02808540A000B13E20D2FFE63ED002E63FC640D0F1E63AA53ACD0180D08860A900AA9D00049D00059D00069D0007E8D0F1A2209530CA10FB85008D99A8584C0000'
 $STUB_HEX = '4358313678A2FF9AA200BD00C19D0004BD00C29D0005BD00C39D0006BD00C49D0007E8D0E54C0004'
-$MENU_LEN = 833
-$STAGE_HDR = 32
+$MENU_LEN = 898
+$STAGE_HDR = 36
+$DC_HEX = 'A9008501AD2280853FAD2180853EDA20A506FAA5348540A5388501205F018534205F018535A5018538A9008532A9208533206106A5018538A900850185028504A9208503A9A08505DA20EDFEFAA5402903D005A92E20D2FFE600C640D0B960B230E630D00CE631D00848A9C08531E60168600000000000000000000000000000'
+$DC_LEN = 128
 $BG_HEX = 'AD1880D00160AD259F29FC8D259FA9208D209FA9FA8D219FA9118D229FAD1D80853EAD1E80853FA000B13E8D239FC8C020D0F6A9008D209F8D219FA9108D229FAD1A808530AD1B808531AD1C808501A9968534A9008535AD1980F008A92C8534A9018535A000B1308D239FC8D0F8E631D006A9C08531E601A534D002C635C634A5340535D0DEA9008501AD19808D2F9FA9068D2D9FA9018D319FA9008D2E9F8D309F8D329F8D339FAD299F09108D299F60'
 $BG_LEN = 177
 
@@ -87,6 +89,26 @@ $charset = (CfgGet 'screen.charset' 'upper').ToLower()
 if ($charset -ne 'upper' -and $charset -ne 'lower') { Fail "screen.charset must be upper or lower" }
 $bgOn = CfgBool 'background.enabled' $false
 $bgFile = CfgGet 'background.file' 'BACKGROUND.PNG'
+$compress = CfgBool 'cartridge.compress' $false
+$autoexec = CfgBool 'cartridge.autoexec' $false
+$loadingText = CfgGet 'loading.text' 'Loading'
+$lzsaExe = $null
+$tmpDir = $null
+function Init-Lzsa {
+    $lzsaCfg = CfgGet 'cartridge.lzsa' 'lzsa.exe'
+    $cands = @($lzsaCfg, (Join-Path $BaseDir $lzsaCfg))
+    if ($PSScriptRoot) { $cands += (Join-Path $PSScriptRoot $lzsaCfg) }
+    foreach ($cand in $cands) {
+        if (-not $script:lzsaExe -and (Test-Path -LiteralPath $cand -PathType Leaf)) { $script:lzsaExe = (Resolve-Path -LiteralPath $cand).Path }
+    }
+    if (-not $script:lzsaExe) {
+        $gc = Get-Command $lzsaCfg -ErrorAction SilentlyContinue
+        if ($gc) { $script:lzsaExe = $gc.Source }
+    }
+    if (-not $script:lzsaExe) { Fail "compression needs lzsa.exe: put it next to this script or the .cfg, or set cartridge.lzsa = full path" }
+    $script:tmpDir = Join-Path ([IO.Path]::GetTempPath()) ("mcart_" + [Guid]::NewGuid().ToString('N'))
+    [void](New-Item -ItemType Directory -Path $script:tmpDir)
+}
 if ($bgOn -and $modeName -ne '80x30' -and $modeName -ne '40x30') { Fail "background.enabled = yes needs screen.mode = 80x30 or 40x30" }
 if ($modeName -eq '80x30') { $bgW = 640 } else { $bgW = 320 }
 if ($bgOn) { $scrBgDefault = 0 } else { $scrBgDefault = 6 }
@@ -138,9 +160,11 @@ $entries = New-Object System.Collections.ArrayList
 foreach ($pl in $progLines) {
     $parts = @($pl.Split('|') | ForEach-Object { $_.Trim() })
     if ($parts.Count -lt 2 -or $parts[0] -eq '' -or $parts[1] -eq '') { Fail "invalid program line (format: Name | FILE.PRG): $pl" }
-    $e = @{ label = $parts[0]; prg = $parts[1]; data = ''; loader = '' }
+    $e = @{ label = $parts[0]; prg = $parts[1]; data = ''; loader = ''; comp = '' }
     if ($parts.Count -gt 2) { $e.data = $parts[2] }
     if ($parts.Count -gt 3) { $e.loader = $parts[3].ToLower() }
+    if ($parts.Count -gt 4) { $e.comp = $parts[4].ToLower() }
+    if ($e.comp -ne '' -and $e.comp -ne 'yes' -and $e.comp -ne 'no') { Fail "$($e.label): the 5th column must be yes or no (compression)" }
     if ($e.data -ne '' -and $e.loader -eq '') { Fail "$($e.label): a data file needs a loader (smbx16 or smb3x16)" }
     if ($e.loader -ne '' -and -not $loaders.ContainsKey($e.loader)) { Fail "$($e.label): unknown loader '$($e.loader)' (smbx16 or smb3x16)" }
     [void]$entries.Add($e)
@@ -218,6 +242,20 @@ S-Plot $sconf $footerRow $mx; S-Colors $sconf $stext $sbg; S-Add $sconf $ctxt; S
 $sunconf = New-Object System.Collections.Generic.List[byte]
 S-Plot $sunconf $footerRow $mx; S-Colors $sunconf $fcol $panel; S-Add $sunconf $ftxt; S-End $sunconf
 
+# ---------------- loading message ----------------
+$sload = New-Object System.Collections.Generic.List[byte]
+[void]$sload.Add([byte]0x8E)
+if ($loadingText.Length -gt 0) {
+    $charsetSaved = $charset
+    $charset = 'upper'
+    $lt = ToPetscii $loadingText
+    $charset = $charsetSaved
+    if ($lt.Length -gt 70) { Fail "loading.text is too long" }
+    S-Plot $sload 29 ([int][Math]::Floor((80 - $lt.Length) / 2))
+    S-Add $sload ([byte[]]$lt)
+}
+S-End $sload
+
 # ---------------- entry names ----------------
 $names = New-Object System.Collections.Generic.List[byte]
 foreach ($e in $entries) {
@@ -229,6 +267,17 @@ foreach ($e in $entries) {
     [void]$names.Add([byte]0x20)
     S-Add $names ([byte[]]$t)
     for ($i = 0; $i -lt ($mw - 1 - $t.Length); $i++) { [void]$names.Add([byte]0x20) }
+}
+
+# ---------------- compression helper (lzsa) ----------------
+function Compress-Chunk([byte[]]$bytes) {
+    $cin = Join-Path $tmpDir 'chunk.bin'
+    $cout = Join-Path $tmpDir 'chunk.lz'
+    if (Test-Path -LiteralPath $cout) { Remove-Item -LiteralPath $cout -Force }
+    [IO.File]::WriteAllBytes($cin, $bytes)
+    & $lzsaExe -r -f2 $cin $cout | Out-Null
+    if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $cout)) { Fail "lzsa failed on a data block ($lzsaExe)" }
+    return ,([IO.File]::ReadAllBytes($cout))
 }
 
 # ---------------- loading the files ----------------
@@ -253,7 +302,7 @@ foreach ($e in $entries) {
     if ($entry -lt 0x0801 -or $entry -ge 0x9F00) { Fail ("{0}: invalid start address `${1:X4}" -f $e.prg, $entry) }
     $payload = New-Object 'byte[]' $ln
     [Array]::Copy($prg, 2, $payload, 0, $ln)
-    $e.load = $load; $e.entry = $entry; $e.dataBytes = $null
+    $e.load = $load; $e.entry = $entry; $e.dataBytes = $null; $e.stored = $null; $e.nchunks = 0
     if ($e.data -ne '') {
         $dp = Join-Path $BaseDir $e.data
         if (-not (Test-Path -LiteralPath $dp)) { Fail "file not found: $($e.data)" }
@@ -270,16 +319,38 @@ foreach ($e in $entries) {
         if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one '$($e.loader)' loader in $($e.prg), found $($hits.Count); check the loader name" }
         $endBank = 1 + [int][Math]::Floor($db.Length / 8192)
         $endAddr = 0xA000 + ($db.Length % 8192)
-        if ($endBank -gt 250) { Fail "$($e.data) is too large" }
+        if ($endBank -gt 127) { Fail "$($e.data) is too large (max 1 MB of data per game)" }
         $patch = New-Object System.Collections.Generic.List[byte]
         foreach ($b in @(0xA9, $endBank, 0x85, 0x00, 0xA2, ($endAddr -band 255), 0xA0, ($endAddr -shr 8))) { [void]$patch.Add([byte]$b) }
         S-Add $patch $tailp
         for ($j = 0; $j -lt $patch.Count; $j++) { $payload[$hits[0] + $j] = $patch[$j] }
         $e.dataBytes = $db
+        $e.stored = $db
+        $useComp = $compress
+        if ($e.comp -eq 'yes') { $useComp = $true } elseif ($e.comp -eq 'no') { $useComp = $false }
+        if ($useComp) {
+            if (-not $lzsaExe) { Init-Lzsa }
+            Write-Host ("Compressing {0} ..." -f $e.data)
+            $st = New-Object System.Collections.Generic.List[byte]
+            $nch = 0
+            for ($pos = 0; $pos -lt $db.Length; $pos += 8192) {
+                $n = [Math]::Min(8192, $db.Length - $pos)
+                $part = New-Object 'byte[]' $n
+                [Array]::Copy($db, $pos, $part, 0, $n)
+                $cc = Compress-Chunk $part
+                if ($cc.Length -gt 8300) { Fail "compressed block too large" }
+                [void]$st.Add([byte]($cc.Length -band 255)); [void]$st.Add([byte]($cc.Length -shr 8))
+                $st.AddRange($cc)
+                $nch++
+            }
+            $e.stored = $st.ToArray()
+            $e.nchunks = $nch
+            Write-Host ("  {0} -> {1} bytes" -f $db.Length, $e.stored.Length)
+        }
     }
     $e.payload = $payload
-    if ($null -eq $e.dataBytes) { $e.njobs = 1 } else { $e.njobs = 1 + [int][Math]::Ceiling($e.dataBytes.Length / $CHUNK) }
-    if ($e.njobs -gt 14) { Fail "$($e.label) needs $($e.njobs) copy jobs (max 14)" }
+    if ($null -eq $e.dataBytes) { $e.njobs = 1 } elseif ($e.nchunks -gt 0) { $e.njobs = 2 } else { $e.njobs = 1 + [int][Math]::Ceiling($e.dataBytes.Length / $CHUNK) }
+    if ($e.njobs -gt 13) { Fail "$($e.label) needs $($e.njobs) copy jobs (max 13)" }
 }
 
 # ---------------- background image (optional) ----------------
@@ -472,8 +543,11 @@ if ($bgOn) {
 # ---------------- layout ----------------
 $jlTotal = 0
 foreach ($e in $entries) { $jlTotal += 8 * ($e.njobs + 1) }
+$anyDc = $false
+foreach ($e in $entries) { if ($e.nchunks -gt 0) { $anyDc = $true } }
 if ($bgOn) { $bgExtra = $BG_LEN + 32 } else { $bgExtra = 0 }
-$dataLen = $STAGE_HDR + $bgExtra + $sinit.Count + $sconf.Count + $sunconf.Count + $names.Count + 4 * $count + $jlTotal + 8
+if ($anyDc) { $dcExtra = $DC_LEN } else { $dcExtra = 0 }
+$dataLen = $STAGE_HDR + $bgExtra + $dcExtra + $sinit.Count + $sconf.Count + $sunconf.Count + $sload.Count + $names.Count + 4 * $count + $jlTotal + 8
 if ($dataLen -gt 0x1D00) { Fail "menu data too large ($dataLen bytes)" }
 if ($bgOn) { $payloadBase = (0x500 + $dataLen + 255) -band (-bnot 255) } else { $payloadBase = (0x500 + $dataLen + 15) -band (-bnot 15) }
 
@@ -481,9 +555,12 @@ $STAGE = 0x8000
 $off = $STAGE_HDR
 $aBgPal = $STAGE + $off + $BG_LEN
 $off += $bgExtra
+$aDc = $STAGE + $off
+$off += $dcExtra
 $aSinit = $STAGE + $off; $off += $sinit.Count
 $aSconf = $STAGE + $off; $off += $sconf.Count
 $aSunconf = $STAGE + $off; $off += $sunconf.Count
+$aSload = $STAGE + $off; $off += $sload.Count
 $aNames = $STAGE + $off; $off += $names.Count
 $aEntries = $STAGE + $off; $off += 4 * $count
 $aJobs = $STAGE + $off
@@ -496,19 +573,24 @@ $jobsBytes = New-Object System.Collections.Generic.List[byte]
 $jlAddr = $aJobs
 foreach ($e in $entries) {
     $jl = New-Object System.Collections.ArrayList
-    [void]$jl.Add(@($romOff, $e.load, $e.payload.Length, 0))
     $e.romOff = $romOff
     $romOff += $e.payload.Length
     if ($null -ne $e.dataBytes) {
         $e.dataOff = $romOff
-        $dl = $e.dataBytes.Length; $pos = 0; $rb = 1
-        while ($pos -lt $dl) {
-            $k = [Math]::Min($CHUNK, $dl - $pos)
-            [void]$jl.Add(@(($romOff + $pos), 0xA000, $k, $rb))
-            $pos += $k; $rb += 7
+        if ($e.nchunks -gt 0) {
+            [void]$jl.Add(@($romOff, 0xA000, $e.nchunks, 0x81))
+            $romOff += $e.stored.Length
+        } else {
+            $dl = $e.dataBytes.Length; $pos = 0; $rb = 1
+            while ($pos -lt $dl) {
+                $k = [Math]::Min($CHUNK, $dl - $pos)
+                [void]$jl.Add(@(($romOff + $pos), 0xA000, $k, $rb))
+                $pos += $k; $rb += 7
+            }
+            $romOff += $dl
         }
-        $romOff += $dl
     }
+    [void]$jl.Add(@($e.romOff, $e.load, $e.payload.Length, 0))
     $jb = New-Object System.Collections.Generic.List[byte]
     foreach ($j in $jl) {
         $o = $j[0]; $dst = $j[1]; $n = $j[2]; $rbk = $j[3]
@@ -547,6 +629,9 @@ $hdr[15] = $aSconf -band 255;   $hdr[16] = $aSconf -shr 8
 $hdr[17] = $aSunconf -band 255; $hdr[18] = $aSunconf -shr 8
 $hdr[19] = $aNames -band 255;   $hdr[20] = $aNames -shr 8
 $hdr[21] = $aEntries -band 255; $hdr[22] = $aEntries -shr 8
+if ($anyDc) { $hdr[31] = $aDc -band 255; $hdr[32] = $aDc -shr 8 }
+$hdr[33] = $aSload -band 255; $hdr[34] = $aSload -shr 8
+if ($autoexec) { $hdr[35] = 1 } else { $hdr[35] = 0 }
 if ($bgOn) {
     $hdr[24] = 1
     if ($bgW -eq 640) { $hdr[25] = 1 } else { $hdr[25] = 0 }
@@ -559,7 +644,8 @@ if ($bgOn) {
 $data = New-Object System.Collections.Generic.List[byte]
 $data.AddRange($hdr)
 if ($bgOn) { $data.AddRange((HexToBytes $BG_HEX)); $data.AddRange($bgPal) }
-$data.AddRange($sinit); $data.AddRange($sconf); $data.AddRange($sunconf); $data.AddRange($names)
+if ($anyDc) { $data.AddRange((HexToBytes $DC_HEX)) }
+$data.AddRange($sinit); $data.AddRange($sconf); $data.AddRange($sunconf); $data.AddRange($sload); $data.AddRange($names)
 $data.AddRange($entriesBytes); $data.AddRange($jobsBytes)
 for ($i = 0; $i -lt 8; $i++) { [void]$data.Add([byte]0) }
 if ($data.Count -ne $dataLen) { Fail "internal error: data size mismatch ($($data.Count) / $dataLen)" }
@@ -577,11 +663,12 @@ $rom[0x104] = $dataLen -shr 8
 if ($bgOn) { [Array]::Copy($bgPix, 0, $rom, $bgOff, $bgPix.Length) }
 foreach ($e in $entries) {
     [Array]::Copy($e.payload, 0, $rom, $e.romOff, $e.payload.Length)
-    if ($null -ne $e.dataBytes) { [Array]::Copy($e.dataBytes, 0, $rom, $e.dataOff, $e.dataBytes.Length) }
+    if ($null -ne $e.dataBytes) { [Array]::Copy($e.stored, 0, $rom, $e.dataOff, $e.stored.Length) }
 }
 
 $outPath = Join-Path $BaseDir $outName
 [IO.File]::WriteAllBytes($outPath, $rom)
+if ($tmpDir -and (Test-Path -LiteralPath $tmpDir)) { Remove-Item -LiteralPath $tmpDir -Recurse -Force -ErrorAction SilentlyContinue }
 Write-Host ""
 Write-Host "Cartridge created: $outPath"
 Write-Host ("  {0} program(s), content {1} bytes, chip {2} KB" -f $count, $total, ($size / 1024))
