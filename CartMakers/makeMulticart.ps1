@@ -9,13 +9,13 @@ param([string]$ConfigFile = "multicart.cfg")
 $ErrorActionPreference = 'Stop'
 
 # ---------------- embedded code (menu, boot stub) ----------------
-$MENU_HEX = '4C05040000A9008530A9C58531A9008532A9808533AD03048534AD04048535A9208536A9008500204D06A9008501AD259F29FD8D259FAD2C9F8541AD0A80C9FFF00418205FFFAD0B80C9FFF0038D2C9FAD1880F010A200BD7C809D0001E8E0B1D0F520000158AD2380F01A20DEFF854220E4FFC98AF00E20DEFF38E542CD238090EE4CA505A9FF8545A9008539853CAD098020D2FFAD0D80853EAD0E80853F20910620CF06205E05C900F0F9C911F015C991F031C90DF00AC91BF04CC903F04880E34CA505A539186901CD00809008A9008539853C80CB853938E53CCD018090C1E63C80BDA539F00CC639A539C53CB0B1853C80ADAD008038E9018539AD008038ED0180853C809AAD0C80D0034CA504AD0F80853EAD1080853F20910620E4FFC900F0F9C959F014C9D9F010AD1180853EAD1280853F2091064CA504204805782081FF58384C47FFAD259F29FD8D259FAD299F29EF8D299FA5418D2C9F6020E4FFC900D036A9012056FFC000D02BDA49FF293C85466849FF29804A4A4A05468546A54549FF254648A5468545688908D00B8924D00A8910D009A90060A99160A91160A90D60A5390A0A186D1580853EAD16806900853FA000B13EAAC8B13E48C8B13E8543C8B13E854468853F863EA000B13E999007C8C070D0F6AD2080F011853FAD1F80853EA07FB13E9900018810F8204805AD1880F003202480782081FF78A200203506A5340535F00EA537100520000180EE204D0680E9A9008501A234BD4C079D4001CA10F7A5438D6601A5448D67014C40018AA8A200B990079530C8E8E008D0F598AAA537297F850060A000A5368501B1309132E630D00AE631D006A9C08531E601E632D00EE633A533C9C0D006A9A08533E600A534D002C635C634A5340535D0CE60A000B13EE63ED002E63F60208606C9FEF00520D2FF80F4208606C901F005C902F012602086068542208606A8A6421820F0FF80D720860685402086068542A54220D2FFC640D0F780C2A9008537A53C186537853BAD0480186537AAAC03801820F0FFA53BC539F010AD068020D2FFA90120D2FFAD0580800EAD088020D2FFA90120D2FFAD078020D2FFAD1380853EAD1480853FA63BF00FA53E186D0280853E9002E63FCAD0F1AD02808540A000B13E20D2FFE63ED002E63FC640D0F1E637A537CD0180D08860A900AA9D00049D00059D00069D0007E8D0F1A2209530CA10FB85008D99A8A90148A96748584C0000A9008501782081FF58384C47FF'
+$MENU_HEX = '4C05040000A9008530A9C58531A9008532A9808533AD03048534AD04048535A9208536A9008500205906A9008501AD259F29FD8D259FAD2C9F8541AD0A80C9FFF00418205FFFAD0B80C9FFF0038D2C9FAD1880F010A200BD7D809D0001E8E0B1D0F520000158A9008539AD2480F0034CB105AD2380F01A20DEFF854220E4FFC98AF00E20DEFF38E542CD238090EE4CB105A9FF8545A9008539853CAD098020D2FFAD0D80853EAD0E80853F209D0620DB06206A05C900F0F9C911F015C991F031C90DF00AC91BF04CC903F04880E34CB105A539186901CD00809008A9008539853C80CB853938E53CCD018090C1E63C80BDA539F00CC639A539C53CB0B1853C80ADAD008038E9018539AD008038ED0180853C809AAD0C80D0034CB104AD0F80853EAD1080853F209D0620E4FFC900F0F9C959F014C9D9F010AD1180853EAD1280853F209D064CB104205405782081FF58384C47FFAD259F29FD8D259FAD299F29EF8D299FA5418D2C9F6020E4FFC900D036A9012056FFC000D02BDA49FF293C85466849FF29804A4A4A05468546A54549FF254648A5468545688908D00B8924D00A8910D009A90060A99160A91160A90D60A5390A0A186D1580853EAD16806900853FA000B13EAAC8B13E48C8B13E8543C8B13E854468853F863EA000B13E999007C8C070D0F6AD2080F011853FAD1F80853EA07FB13E9900018810F8205405AD1880F003202580782081FF78A200204106A5340535F00EA537100520000180EE20590680E9A9008501A234BD58079D4001CA10F7A5438D6601A5448D67014C40018AA8A200B990079530C8E8E008D0F598AAA537297F850060A000A5368501B1309132E630D00AE631D006A9C08531E601E632D00EE633A533C9C0D006A9A08533E600A534D002C635C634A5340535D0CE60A000B13EE63ED002E63F60209206C9FEF00520D2FF80F4209206C901F005C902F012602092068542209206A8A6421820F0FF80D720920685402092068542A54220D2FFC640D0F780C2A9008537A53C186537853BAD0480186537AAAC03801820F0FFA53BC539F010AD068020D2FFA90120D2FFAD0580800EAD088020D2FFA90120D2FFAD078020D2FFAD1380853EAD1480853FA63BF00FA53E186D0280853E9002E63FCAD0F1AD02808540A000B13E20D2FFE63ED002E63FC640D0F1E637A537CD0180D08860A900AA9D00049D00059D00069D0007E8D0F1A2209530CA10FB85008D99A8A90148A96748584C0000A9008501782081FF58384C47FF'
 $STUB_HEX = '4358313678A2FF9AA200BD00C19D0004BD00C29D0005BD00C39D0006BD00C49D0007E8D0E54C0004'
-$MENU_LEN = 897
-$STAGE_HDR = 124
-$HDR_FIELDS = 36
+$MENU_LEN = 909
+$STAGE_HDR = 125
+$HDR_FIELDS = 37
 $CLEAN_HEX = 'AD259F29FC8D259FA9208D209FA9FA8D219FA9118D229FA2008A0A0A0A0A85428A05428D239F8E239FE8E010D0EBA206A9009D2D9FCA10FA8D209F8D219FA9108D229FA900A096A2008D239F8D239FE8D0F788D0F4600000'
-$DC_HEX = 'A9008501AD2280853FAD2180853EDA209106FAA5348540A5368501205F018534205F018535A5018536A9008532A9208533204D06A5018536A900850185028504A9208503A9A08505DA20EDFEFAA5402903D005A92E20D2FFE600C640D0B960B230E630D00CE631D00848A9C08531E60168600000000000000000000000000000'
+$DC_HEX = 'A9008501AD2280853FAD2180853EDA209D06FAA5348540A5368501205F018534205F018535A5018536A9008532A9208533205906A5018536A900850185028504A9208503A9A08505DA20EDFEFAA5402903D005A92E20D2FFE600C640D0B960B230E630D00CE631D00848A9C08531E60168600000000000000000000000000000'
 $DC_LEN = 128
 $BG_HEX = 'AD1880D00160AD259F29FC8D259FA9208D209FA9FA8D219FA9118D229FAD1D80853EAD1E80853FA000B13E8D239FC8C020D0F6A9008D209F8D219FA9108D229FAD1A808530AD1B808531AD1C808501A9968534A9008535AD1980F008A92C8534A9018535A000B1308D239FC8D0F8E631D006A9C08531E601A534D002C635C634A5340535D0DEA9008501AD19808D2F9FA9068D2D9FA9018D319FA9008D2E9F8D309F8D329F8D339FAD299F09108D299F60'
 $BG_LEN = 177
@@ -89,10 +89,13 @@ switch ($modeName) {
 }
 $charset = (CfgGet 'screen.charset' 'upper').ToLower()
 if ($charset -ne 'upper' -and $charset -ne 'lower') { Fail "screen.charset must be upper or lower" }
-$bgOn = CfgBool 'background.enabled' $false
+$autoVal = (CfgGet 'cartridge.autoexec' 'no').ToLower()
+if ('yes','true','1','on','no','false','0','off','single' -notcontains $autoVal) { Fail 'cartridge.autoexec must be yes, single or no' }
+$single = ($autoVal -eq 'single')
+$bgOn = (CfgBool 'background.enabled' $false) -and -not $single
 $bgFile = CfgGet 'background.file' 'BACKGROUND.PNG'
 $compress = CfgBool 'cartridge.compress' $false
-$autoexec = CfgBool 'cartridge.autoexec' $false
+$autoexec = ('yes','true','1','on' -contains $autoVal)
 $autoJiffies = CfgInt 'cartridge.autoexec_delay' 30 1 255
 $loadingText = CfgGet 'loading.text' 'Loading'
 $lzsaExe = $null
@@ -118,7 +121,7 @@ if ($bgOn) { $scrBgDefault = 0 } else { $scrBgDefault = 6 }
 $scrBg = CfgColor 'screen.background' $scrBgDefault
 $scrFg = CfgColor 'screen.text' 14
 $bv = (CfgGet 'screen.border' 'default').ToLower()
-if ($bv -eq 'default') { $border = 255 } else { $border = CfgColor 'screen.border' 0 }
+if ($bv -eq 'default' -or $single) { $border = 255 } else { $border = CfgColor 'screen.border' 0 }
 
 if ($cols -ge 80) { $margin = 4 } else { $margin = 2 }
 if ($rows -ge 60) { $ymargin = 3 } else { $ymargin = 2 }
@@ -156,14 +159,22 @@ if (($mx + $mw) -gt $cols -or ($my + $mrows) -gt $rows) { Fail "the menu does no
 
 # ---------------- program list ----------------
 $loaders = @{
-    'smbx16'  = @{ pat = (HexToBytes 'A900A200A0A020D5FF900E'); tail = (HexToBytes '189 00E'.Replace(' ','')) }
-    'smb3x16' = @{ pat = (HexToBytes 'A901850 0A900A200A0A04CD5FF'.Replace(' ','')); tail = (HexToBytes '1860EAEAEA') }
-    # X16 Contra / Probotector (github.com/vermiceli/x16-contra): DATA is a FOLDER holding the 17 BANK-*.BIN files.
-    # The first byte of load_memory_banks (STZ $22; LDA #1; STA $23; LDA $23; STA $00) becomes RTS.
-    'contrax16' = @{ pat = (HexToBytes '6422A9018523A5238500'); tail = $null }
+    'binx16' = @{ pat = (HexToBytes 'A900A200A0A020D5FF900E'); tail = (HexToBytes '189 00E'.Replace(' ','')) }
+    'smbx16'  = @{ pat = (HexToBytes 'A900A200A0A020D5FF900E'); tail = (HexToBytes '189 00E'.Replace(' ','')) }  # old name of binx16 (still accepted)
+    'tanookix16' = @{ pat = (HexToBytes 'A901850 0A900A200A0A04CD5FF'.Replace(' ','')); tail = (HexToBytes '1860EAEAEA') }
+    'smb3x16' = @{ pat = (HexToBytes 'A901850 0A900A200A0A04CD5FF'.Replace(' ','')); tail = (HexToBytes '1860EAEAEA') }  # old name of tanookix16 (still accepted)
+    'bincompress' = @{ pat = (HexToBytes 'A901850 0A900A200A0A04CD5FF'.Replace(' ','')); tail = (HexToBytes '1860EAEAEA') }  # old name (still accepted)
+    # diskemu: a virtual disk inside the cartridge. DATA is a FOLDER; every file in it (except the
+    # program itself and documents/scripts) becomes a file the game can LOAD by name. The KERNAL LOAD vector ($0330) is redirected
+    # to a small routine that reads the files from the cartridge (RAM, banked RAM and VRAM destinations).
+    'diskemu' = @{ pat = $null; tail = $null }
 }
-$contraBanks = @('BANK-0-1.BIN','BANK-0-2.BIN','BANK-0-3.BIN','BANK-1-4.BIN','BANK-2-5.BIN','BANK-2-6.BIN','BANK-2-7.BIN','BANK-3-8.BIN','BANK-3-9.BIN','BANK-4-A.BIN','BANK-4-B.BIN','BANK-5-C.BIN','BANK-5-D.BIN','BANK-6-E.BIN','BANK-6-F.BIN','BANK-X-1.BIN','BANK-X-2.BIN')
+$DE_BANK_USE = 15872
+$skipExt = @('.PYZ','.PY','.TXT','.MD','.CFG','.PS1','.ZIP','.DBG','.LBL','.MAP','.ASM','.INC','.BAT','.SH','.LOG','.INI','.DB','.PNG','.JPG')
+$DE_STUB_HEX = '0878A601DAA20086014C00FE68850128AD2001C90160'
+$DE_HOOK_HEX = '8D2101A203B5FA48CA10FAA90085FAA9C085FBA000B1FAD0034CEEFECC8F02F009B18AD1FAD00BC880F2C010F011B1FAF00D18A5FA691685FA90D8E6FB80D4A010B1FA8D2601C8B1FAAAC8B1FA48C8B1FA8D2301C8B1FA8D2401C8B1FA8D250186FA6885FBAD26018501A000AD9102C901D0122006FF85FC2006FF85FD201DFF201DFF8008A58885FCA58985FDA200AD2101C902901AE8290109108D229FA5FC8D209FA5FD8D219FAD259F29FE8D259F8E2201AD23010D24010D2501F02C2006FFAE2201D01691FCE6FCD019E6FDA6FDE0C0D011A2A086FDE60080098D239FE6FCD002E6FD201DFF80C9A9008002A9048D2001A6FCA4FD6885FA6885FB6885FC6885FD4C0C01B1FAE6FAD010E6FB48A5FBC9FED006A9C085FBE6016860AD2301D00BAD2401D003CE2501CE2401CE230160'
 $entries = New-Object System.Collections.ArrayList
+if ($single -and $progLines.Count -gt 1) { $progLines = [System.Collections.ArrayList]@($progLines[0]) }
 foreach ($pl in $progLines) {
     $parts = @($pl.Split('|') | ForEach-Object { $_.Trim() })
     if ($parts.Count -lt 2 -or $parts[0] -eq '' -or $parts[1] -eq '') { Fail "invalid program line (format: Name | FILE.PRG): $pl" }
@@ -172,8 +183,8 @@ foreach ($pl in $progLines) {
     if ($parts.Count -gt 3) { $e.loader = $parts[3].ToLower() }
     if ($parts.Count -gt 4) { $e.comp = $parts[4].ToLower() }
     if ($e.comp -ne '' -and $e.comp -ne 'yes' -and $e.comp -ne 'no') { Fail "$($e.label): the 5th column must be yes or no (compression)" }
-    if ($e.data -ne '' -and $e.loader -eq '') { Fail "$($e.label): a data file needs a loader (smbx16, smb3x16 or contrax16)" }
-    if ($e.loader -ne '' -and -not $loaders.ContainsKey($e.loader)) { Fail "$($e.label): unknown loader '$($e.loader)' (smbx16, smb3x16 or contrax16)" }
+    if ($e.data -ne '' -and $e.loader -eq '') { Fail "$($e.label): a data file needs a loader (binx16, tanookix16 or diskemu)" }
+    if ($e.loader -ne '' -and -not $loaders.ContainsKey($e.loader)) { Fail "$($e.label): unknown loader '$($e.loader)' (binx16, tanookix16 or diskemu)" }
     [void]$entries.Add($e)
 }
 $count = $entries.Count
@@ -310,50 +321,57 @@ foreach ($e in $entries) {
     $payload = New-Object 'byte[]' $ln
     [Array]::Copy($prg, 2, $payload, 0, $ln)
     $e.load = $load; $e.entry = $entry; $e.dataBytes = $null; $e.stored = $null; $e.nchunks = 0
-    if ($e.data -ne '') {
-        if ($e.loader -eq 'contrax16') {
-            $ms = New-Object System.IO.MemoryStream
-            foreach ($bn in $contraBanks) {
-                $bp = Join-Path (Join-Path $BaseDir $e.data) $bn
-                if (-not (Test-Path -LiteralPath $bp)) { Fail "file not found: $($e.data)\$bn" }
-                $bb = [IO.File]::ReadAllBytes($bp)
-                if ($bb.Length -gt 8192) { Fail "$($e.data)\$bn is larger than 8192 bytes" }
-                $ms.Write($bb, 0, $bb.Length)
-                $padLen = 8192 - $bb.Length
-                if ($padLen -gt 0) { $zero = New-Object 'byte[]' $padLen; $ms.Write($zero, 0, $padLen) }
-            }
-            $db = $ms.ToArray()
-            $pat = $loaders['contrax16'].pat
-            $hits = New-Object System.Collections.ArrayList
-            for ($i = 0; $i -le $ln - $pat.Length; $i++) {
-                $same = $true
-                for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
-                if ($same) { [void]$hits.Add($i) }
-            }
-            if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one load_memory_banks routine in $($e.prg), found $($hits.Count); is this the X16 Contra PRG?" }
-            $payload[$hits[0]] = 0x60
-        } else {
-            $dp = Join-Path $BaseDir $e.data
-            if (-not (Test-Path -LiteralPath $dp)) { Fail "file not found: $($e.data)" }
-            $db = [IO.File]::ReadAllBytes($dp)
-            if ($db.Length -lt 1) { Fail "$($e.data) is empty" }
-            $pat = $loaders[$e.loader].pat
-            $tailp = $loaders[$e.loader].tail
-            $hits = New-Object System.Collections.ArrayList
-            for ($i = 0; $i -le $ln - $pat.Length; $i++) {
-                $same = $true
-                for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
-                if ($same) { [void]$hits.Add($i) }
-            }
-            if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one '$($e.loader)' loader in $($e.prg), found $($hits.Count); check the loader name" }
-            $endBank = 1 + [int][Math]::Floor($db.Length / 8192)
-            $endAddr = 0xA000 + ($db.Length % 8192)
-            if ($endBank -gt 127) { Fail "$($e.data) is too large (max 1 MB of data per game)" }
-            $patch = New-Object System.Collections.Generic.List[byte]
-            foreach ($b in @(0xA9, $endBank, 0x85, 0x00, 0xA2, ($endAddr -band 255), 0xA0, ($endAddr -shr 8))) { [void]$patch.Add([byte]$b) }
-            S-Add $patch $tailp
-            for ($j = 0; $j -lt $patch.Count; $j++) { $payload[$hits[0] + $j] = $patch[$j] }
+    $e.dfiles = $null
+    if ($e.data -ne '' -and $e.loader -eq 'diskemu') {
+        $dd = Join-Path $BaseDir $e.data
+        if (-not (Test-Path -LiteralPath $dd -PathType Container)) { Fail "folder not found: $($e.data)" }
+        $mainFull = (Resolve-Path -LiteralPath $p).Path
+        $dl = New-Object System.Collections.ArrayList
+        foreach ($fi in (Get-ChildItem -LiteralPath $dd -File | Sort-Object { $_.Name.ToUpper() })) {
+            $ext = $fi.Extension.ToUpper()
+            if ($skipExt -contains $ext) { continue }
+            if ($fi.FullName -ieq $mainFull) { continue }
+            if ($fi.Name.Length -gt 16) { Fail "$($e.label): file name too long (max 16 characters): $($fi.Name)" }
+            $fb = [IO.File]::ReadAllBytes($fi.FullName)
+            if ($fb.Length -lt 1) { Fail "$($fi.Name) is empty" }
+            [void]$dl.Add(@($fi.Name.ToUpper(), $fb))
         }
+        Write-Host ("{0}: virtual disk with {1} file(s): {2}" -f $e.label, $dl.Count, (($dl | ForEach-Object { "{0} ({1})" -f $_[0], $_[1].Length }) -join ', '))
+        if ($dl.Count -eq 0) { Fail "$($e.label): no files found in $($e.data)" }
+        $stubAt = $load + $payload.Length
+        $dataAt = $stubAt + 24
+        $ins = [byte[]]@(0xA2, 0x15, 0xBD, ($dataAt -band 255), ($dataAt -shr 8), 0x9D, 0x00, 0x01, 0xCA, 0x10, 0xF7, 0xA9, 0x00, 0x8D, 0x30, 0x03, 0xA9, 0x01, 0x8D, 0x31, 0x03, 0x4C, ($entry -band 255), ($entry -shr 8))
+        $stubB = HexToBytes $DE_STUB_HEX
+        $np = New-Object 'byte[]' ($payload.Length + 24 + $stubB.Length)
+        [Array]::Copy($payload, 0, $np, 0, $payload.Length)
+        [Array]::Copy($ins, 0, $np, $payload.Length, 24)
+        [Array]::Copy($stubB, 0, $np, $payload.Length + 24, $stubB.Length)
+        if (($load + $np.Length) -gt 0x9F00) { Fail "$($e.label): program too large for the diskemu loader" }
+        $e.dirOfs = $payload.Length + 24 + 6
+        $payload = $np
+        $e.entry = $stubAt
+        $e.dfiles = $dl
+    } elseif ($e.data -ne '') {
+        $dp = Join-Path $BaseDir $e.data
+        if (-not (Test-Path -LiteralPath $dp)) { Fail "file not found: $($e.data)" }
+        $db = [IO.File]::ReadAllBytes($dp)
+        if ($db.Length -lt 1) { Fail "$($e.data) is empty" }
+        $pat = $loaders[$e.loader].pat
+        $tailp = $loaders[$e.loader].tail
+        $hits = New-Object System.Collections.ArrayList
+        for ($i = 0; $i -le $ln - $pat.Length; $i++) {
+            $same = $true
+            for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
+            if ($same) { [void]$hits.Add($i) }
+        }
+        if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one '$($e.loader)' loader in $($e.prg), found $($hits.Count); check the loader name" }
+        $endBank = 1 + [int][Math]::Floor($db.Length / 8192)
+        $endAddr = 0xA000 + ($db.Length % 8192)
+        if ($endBank -gt 127) { Fail "$($e.data) is too large (max 1 MB of data per game)" }
+        $patch = New-Object System.Collections.Generic.List[byte]
+        foreach ($b in @(0xA9, $endBank, 0x85, 0x00, 0xA2, ($endAddr -band 255), 0xA0, ($endAddr -shr 8))) { [void]$patch.Add([byte]$b) }
+        S-Add $patch $tailp
+        for ($j = 0; $j -lt $patch.Count; $j++) { $payload[$hits[0] + $j] = $patch[$j] }
         $e.dataBytes = $db
         $e.stored = $db
         $useComp = $compress
@@ -605,6 +623,31 @@ foreach ($e in $entries) {
     $jl = New-Object System.Collections.ArrayList
     $e.romOff = $romOff
     $romOff += $e.payload.Length
+    if ($null -ne $e.dfiles) {
+        $bs = [int][Math]::Floor(($romOff + 16383) / 16384) * 16384
+        $dirLen = ($e.dfiles.Count + 1) * 22
+        if ($dirLen -gt $DE_BANK_USE) { Fail "too many files for the diskemu directory" }
+        $dirb = New-Object System.Collections.Generic.List[byte]
+        $stream = New-Object System.Collections.Generic.List[byte]
+        $v = $dirLen
+        foreach ($f in $e.dfiles) {
+            $nb = [Text.Encoding]::ASCII.GetBytes($f[0]); $fb = $f[1]
+            $bank = 32 + ($bs -shr 14) + [int][Math]::Floor($v / $DE_BANK_USE)
+            $ad = 0xC000 + ($v % $DE_BANK_USE)
+            $dirb.AddRange($nb)
+            for ($q = $nb.Length; $q -lt 16; $q++) { [void]$dirb.Add([byte]0) }
+            foreach ($b in @($bank, ($ad -band 255), ($ad -shr 8), ($fb.Length -band 255), (($fb.Length -shr 8) -band 255), ($fb.Length -shr 16))) { [void]$dirb.Add([byte]$b) }
+            $v += $fb.Length
+        }
+        for ($q = 0; $q -lt 22; $q++) { [void]$dirb.Add([byte]0) }
+        $stream.AddRange($dirb)
+        foreach ($f in $e.dfiles) { $stream.AddRange([byte[]]$f[1]) }
+        $e.blobBanks = [int][Math]::Ceiling($stream.Count / $DE_BANK_USE)
+        $e.blobStart = $bs
+        $e.blobBytes = $stream.ToArray()
+        $e.payload[$e.dirOfs] = [byte](32 + ($bs -shr 14))
+        $romOff = $bs + $e.blobBanks * 16384
+    }
     if ($null -ne $e.dataBytes) {
         $e.dataOff = $romOff
         if ($e.nchunks -gt 0) {
@@ -654,6 +697,7 @@ $cleanBytes = HexToBytes $CLEAN_HEX
 $hdr[0] = $count; $hdr[1] = $rowsEff; $hdr[2] = $mw; $hdr[3] = $mx; $hdr[4] = $my
 $hdr[5] = $ColCode[$ntext]; $hdr[6] = $ColCode[$nbg]; $hdr[7] = $ColCode[$stext]; $hdr[8] = $ColCode[$sbg]
 if ($charset -eq 'upper') { $hdr[9] = 0x8E } else { $hdr[9] = 0x0E }
+if ($single) { $modeByte = 255 }
 $hdr[10] = $modeByte; $hdr[11] = $border
 if ($allowExit) { $hdr[12] = 1 } else { $hdr[12] = 0 }
 $hdr[13] = $aSinit -band 255;   $hdr[14] = $aSinit -shr 8
@@ -664,6 +708,7 @@ $hdr[21] = $aEntries -band 255; $hdr[22] = $aEntries -shr 8
 if ($anyDc) { $hdr[31] = $aDc -band 255; $hdr[32] = $aDc -shr 8 }
 $hdr[33] = $aSload -band 255; $hdr[34] = $aSload -shr 8
 if ($autoexec) { $hdr[35] = $autoJiffies } else { $hdr[35] = 0 }
+if ($single) { $hdr[36] = 1 }
 if ($bgOn) {
     $hdr[24] = 1
     if ($bgW -eq 640) { $hdr[25] = 1 } else { $hdr[25] = 0 }
@@ -696,6 +741,14 @@ if ($bgOn) { [Array]::Copy($bgPix, 0, $rom, $bgOff, $bgPix.Length) }
 foreach ($e in $entries) {
     [Array]::Copy($e.payload, 0, $rom, $e.romOff, $e.payload.Length)
     if ($null -ne $e.dataBytes) { [Array]::Copy($e.stored, 0, $rom, $e.dataOff, $e.stored.Length) }
+    if ($null -ne $e.dfiles) {
+        $hk = HexToBytes $DE_HOOK_HEX
+        for ($i = 0; $i -lt $e.blobBanks; $i++) {
+            $n = [Math]::Min($DE_BANK_USE, $e.blobBytes.Length - $i * $DE_BANK_USE)
+            [Array]::Copy($e.blobBytes, $i * $DE_BANK_USE, $rom, $e.blobStart + $i * 16384, $n)
+            [Array]::Copy($hk, 0, $rom, $e.blobStart + $i * 16384 + 0x3E00, $hk.Length)
+        }
+    }
 }
 
 $outPath = Join-Path $BaseDir $outName
