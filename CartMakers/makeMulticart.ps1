@@ -158,7 +158,11 @@ if (($mx + $mw) -gt $cols -or ($my + $mrows) -gt $rows) { Fail "the menu does no
 $loaders = @{
     'smbx16'  = @{ pat = (HexToBytes 'A900A200A0A020D5FF900E'); tail = (HexToBytes '189 00E'.Replace(' ','')) }
     'smb3x16' = @{ pat = (HexToBytes 'A901850 0A900A200A0A04CD5FF'.Replace(' ','')); tail = (HexToBytes '1860EAEAEA') }
+    # X16 Contra / Probotector (github.com/vermiceli/x16-contra): DATA is a FOLDER holding the 17 BANK-*.BIN files.
+    # The first byte of load_memory_banks (STZ $22; LDA #1; STA $23; LDA $23; STA $00) becomes RTS.
+    'contrax16' = @{ pat = (HexToBytes '6422A9018523A5238500'); tail = $null }
 }
+$contraBanks = @('BANK-0-1.BIN','BANK-0-2.BIN','BANK-0-3.BIN','BANK-1-4.BIN','BANK-2-5.BIN','BANK-2-6.BIN','BANK-2-7.BIN','BANK-3-8.BIN','BANK-3-9.BIN','BANK-4-A.BIN','BANK-4-B.BIN','BANK-5-C.BIN','BANK-5-D.BIN','BANK-6-E.BIN','BANK-6-F.BIN','BANK-X-1.BIN','BANK-X-2.BIN')
 $entries = New-Object System.Collections.ArrayList
 foreach ($pl in $progLines) {
     $parts = @($pl.Split('|') | ForEach-Object { $_.Trim() })
@@ -168,8 +172,8 @@ foreach ($pl in $progLines) {
     if ($parts.Count -gt 3) { $e.loader = $parts[3].ToLower() }
     if ($parts.Count -gt 4) { $e.comp = $parts[4].ToLower() }
     if ($e.comp -ne '' -and $e.comp -ne 'yes' -and $e.comp -ne 'no') { Fail "$($e.label): the 5th column must be yes or no (compression)" }
-    if ($e.data -ne '' -and $e.loader -eq '') { Fail "$($e.label): a data file needs a loader (smbx16 or smb3x16)" }
-    if ($e.loader -ne '' -and -not $loaders.ContainsKey($e.loader)) { Fail "$($e.label): unknown loader '$($e.loader)' (smbx16 or smb3x16)" }
+    if ($e.data -ne '' -and $e.loader -eq '') { Fail "$($e.label): a data file needs a loader (smbx16, smb3x16 or contrax16)" }
+    if ($e.loader -ne '' -and -not $loaders.ContainsKey($e.loader)) { Fail "$($e.label): unknown loader '$($e.loader)' (smbx16, smb3x16 or contrax16)" }
     [void]$entries.Add($e)
 }
 $count = $entries.Count
@@ -307,26 +311,49 @@ foreach ($e in $entries) {
     [Array]::Copy($prg, 2, $payload, 0, $ln)
     $e.load = $load; $e.entry = $entry; $e.dataBytes = $null; $e.stored = $null; $e.nchunks = 0
     if ($e.data -ne '') {
-        $dp = Join-Path $BaseDir $e.data
-        if (-not (Test-Path -LiteralPath $dp)) { Fail "file not found: $($e.data)" }
-        $db = [IO.File]::ReadAllBytes($dp)
-        if ($db.Length -lt 1) { Fail "$($e.data) is empty" }
-        $pat = $loaders[$e.loader].pat
-        $tailp = $loaders[$e.loader].tail
-        $hits = New-Object System.Collections.ArrayList
-        for ($i = 0; $i -le $ln - $pat.Length; $i++) {
-            $same = $true
-            for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
-            if ($same) { [void]$hits.Add($i) }
+        if ($e.loader -eq 'contrax16') {
+            $ms = New-Object System.IO.MemoryStream
+            foreach ($bn in $contraBanks) {
+                $bp = Join-Path (Join-Path $BaseDir $e.data) $bn
+                if (-not (Test-Path -LiteralPath $bp)) { Fail "file not found: $($e.data)\$bn" }
+                $bb = [IO.File]::ReadAllBytes($bp)
+                if ($bb.Length -gt 8192) { Fail "$($e.data)\$bn is larger than 8192 bytes" }
+                $ms.Write($bb, 0, $bb.Length)
+                $padLen = 8192 - $bb.Length
+                if ($padLen -gt 0) { $zero = New-Object 'byte[]' $padLen; $ms.Write($zero, 0, $padLen) }
+            }
+            $db = $ms.ToArray()
+            $pat = $loaders['contrax16'].pat
+            $hits = New-Object System.Collections.ArrayList
+            for ($i = 0; $i -le $ln - $pat.Length; $i++) {
+                $same = $true
+                for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
+                if ($same) { [void]$hits.Add($i) }
+            }
+            if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one load_memory_banks routine in $($e.prg), found $($hits.Count); is this the X16 Contra PRG?" }
+            $payload[$hits[0]] = 0x60
+        } else {
+            $dp = Join-Path $BaseDir $e.data
+            if (-not (Test-Path -LiteralPath $dp)) { Fail "file not found: $($e.data)" }
+            $db = [IO.File]::ReadAllBytes($dp)
+            if ($db.Length -lt 1) { Fail "$($e.data) is empty" }
+            $pat = $loaders[$e.loader].pat
+            $tailp = $loaders[$e.loader].tail
+            $hits = New-Object System.Collections.ArrayList
+            for ($i = 0; $i -le $ln - $pat.Length; $i++) {
+                $same = $true
+                for ($j = 0; $j -lt $pat.Length; $j++) { if ($payload[$i + $j] -ne $pat[$j]) { $same = $false; break } }
+                if ($same) { [void]$hits.Add($i) }
+            }
+            if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one '$($e.loader)' loader in $($e.prg), found $($hits.Count); check the loader name" }
+            $endBank = 1 + [int][Math]::Floor($db.Length / 8192)
+            $endAddr = 0xA000 + ($db.Length % 8192)
+            if ($endBank -gt 127) { Fail "$($e.data) is too large (max 1 MB of data per game)" }
+            $patch = New-Object System.Collections.Generic.List[byte]
+            foreach ($b in @(0xA9, $endBank, 0x85, 0x00, 0xA2, ($endAddr -band 255), 0xA0, ($endAddr -shr 8))) { [void]$patch.Add([byte]$b) }
+            S-Add $patch $tailp
+            for ($j = 0; $j -lt $patch.Count; $j++) { $payload[$hits[0] + $j] = $patch[$j] }
         }
-        if ($hits.Count -ne 1) { Fail "$($e.label): expected exactly one '$($e.loader)' loader in $($e.prg), found $($hits.Count); check the loader name" }
-        $endBank = 1 + [int][Math]::Floor($db.Length / 8192)
-        $endAddr = 0xA000 + ($db.Length % 8192)
-        if ($endBank -gt 127) { Fail "$($e.data) is too large (max 1 MB of data per game)" }
-        $patch = New-Object System.Collections.Generic.List[byte]
-        foreach ($b in @(0xA9, $endBank, 0x85, 0x00, 0xA2, ($endAddr -band 255), 0xA0, ($endAddr -shr 8))) { [void]$patch.Add([byte]$b) }
-        S-Add $patch $tailp
-        for ($j = 0; $j -lt $patch.Count; $j++) { $payload[$hits[0] + $j] = $patch[$j] }
         $e.dataBytes = $db
         $e.stored = $db
         $useComp = $compress
