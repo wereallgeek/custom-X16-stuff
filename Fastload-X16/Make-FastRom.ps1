@@ -24,6 +24,7 @@
      replaced by "FAST" + the build letter ($BuildLetter below, edit it by hand for each build) + the first 2 characters of the original id.  The version number is NOT
      touched.  "FAST" contains non-hex letters, so it can never equal a real build id, and a future
      official release (different version number and different id) is always seen as different.
+  5. text only: the HELP command's title "COMMANDER X16 ROM" becomes "CX16 FASTLOAD ROM" (same length).
   Nothing else is modified.
 
 .EXAMPLE
@@ -39,7 +40,7 @@ param(
 )
 # Build letter: shown as the 5th character of the ROM's build id (FAST<letter>xx).  Change it by hand
 # before every build you flash (A, B, C, ...) so each test ROM is distinguishable in the CX16 update tool.
-$BuildLetter = 'A'
+$BuildLetter = 'B'
 
 $ErrorActionPreference = 'Stop'
 
@@ -222,6 +223,18 @@ if ($BuildLetter -notmatch '^[A-Z0-9]$') { throw "`$BuildLetter must be one lett
 $new = 'FAST' + $BuildLetter + $old.Substring(0, 2)
 for ($k = 0; $k -lt 7; $k++) { $sys[$k] = [byte][char]$new[$k] }
 
+# the HELP command's title (same length, text only):  COMMANDER X16 ROM  ->  CX16 FASTLOAD ROM
+$t0 = [System.Text.Encoding]::ASCII.GetBytes('COMMANDER X16 ROM ')
+$t1 = [System.Text.Encoding]::ASCII.GetBytes('CX16 FASTLOAD ROM ')
+$helpHits = Find-Pattern $sys 0 262144 ([int[]]$t0)
+if ($helpHits.Length -eq 1) {
+    for ($k = 0; $k -lt 18; $k++) { $sys[$helpHits[0] + $k] = $t1[$k] }
+    $helpDone = $true
+} else {
+    Write-Warning "HELP title not found ($($helpHits.Length) matches): HELP will not show the FASTLOAD name (the ROM works anyway)."
+    $helpDone = $false
+}
+
 [System.IO.File]::WriteAllBytes($outPath, $sys)
 
 $sha = [System.Security.Cryptography.SHA256]::Create()
@@ -230,5 +243,6 @@ Write-Host ("OK  {0}  ({1} bytes)" -f $outPath, $sys.Length)
 Write-Host ("    fastload stored in ROM bank {0}" -f $Bank)
 Write-Host ("    boot stub at `${0:X4}, call patched at `${1:X4}, boot_cartridge = `${2:X4}" -f $stubAddr, (0xC000 + $c[0]), $bootAddr)
 Write-Host ("    LOAD entry stub at `${0:X4}; default LOAD vector read from `${1:X4}; nothing is kept in RAM" -f $ent, $tbl)
+if ($helpDone) { Write-Host "    HELP title: CX16 FASTLOAD ROM" }
 Write-Host ("    build id: {0} -> {1}   (version number unchanged)" -f $old, $new)
 Write-Host ("    sha256 {0}" -f $hash)
