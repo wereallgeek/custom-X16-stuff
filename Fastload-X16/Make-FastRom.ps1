@@ -21,7 +21,7 @@
       call "jsr boot_cartridge" in the KERNAL start-up is changed to call it (it hooks ILOAD at boot).
   4. identification: the ROM's 7-character build id (the commit hash stored at the very start of the
      KERNAL ROM, which the CX16 update program compares together with the version number) is
-     replaced by "FAST" + the first 3 characters of the original id.  The version number is NOT
+     replaced by "FAST" + the build letter ($BuildLetter below, edit it by hand for each build) + the first 2 characters of the original id.  The version number is NOT
      touched.  "FAST" contains non-hex letters, so it can never equal a real build id, and a future
      official release (different version number and different id) is always seen as different.
   Nothing else is modified.
@@ -37,6 +37,10 @@ param(
     [string]$Out  = 'FASTROM-R49.BIN',
     [ValidateRange(16, 31)] [int]$Bank = 31
 )
+# Build letter: shown as the 5th character of the ROM's build id (FAST<letter>xx).  Change it by hand
+# before every build you flash (A, B, C, ...) so each test ROM is distinguishable in the CX16 update tool.
+$BuildLetter = 'A'
+
 $ErrorActionPreference = 'Stop'
 
 function Get-FullPath([string]$p) {
@@ -214,7 +218,8 @@ for ($k = 0; $k -lt 7; $k++) {
     }
     $old += [char]$ch
 }
-$new = 'FAST' + $old.Substring(0, 3)
+if ($BuildLetter -notmatch '^[A-Z0-9]$') { throw "`$BuildLetter must be one letter or digit (A-Z, 0-9)." }
+$new = 'FAST' + $BuildLetter + $old.Substring(0, 2)
 for ($k = 0; $k -lt 7; $k++) { $sys[$k] = [byte][char]$new[$k] }
 
 [System.IO.File]::WriteAllBytes($outPath, $sys)
