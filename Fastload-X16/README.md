@@ -11,7 +11,6 @@ The X16's stock KERNAL loads from IEC devices byte by byte, which is slow. On th
 It hooks the KERNAL LOAD vector (`ILOAD`, `$0330`) and, for plain `LOAD "NAME",unit` calls, uploads the Epyx stage-1/stage-2 routines to the drive and receives the file at high speed. Everything else (verify, VRAM loads, headerless loads, tape, non-IEC devices, units owned by CMDR-DOS) is passed on to the normal KERNAL LOAD.
 
 - Works with any device number >= 8 (not locked to device 8).
-- Shows a short banner after reset to know it is active.
 - Reports errors through STATUS so BASIC prints normal errors (FILE NOT FOUND, etc.).
 
 There are two ways to use it:
@@ -42,13 +41,13 @@ You need your own unmodified `ROM-R49.BIN` (the official `rom.bin`, 262144 bytes
 The script:
 
 - pads the ROM to 512 KB (unused banks `$FF`) and stores the fastloader in ROM bank 31;
-- adds a small boot stub in free KERNAL space so the fastloader is installed at start-up, while the normal `boot_cartridge` check of bank 32 stays untouched, so **other cartridges still work**;
-- adds a KERNAL-resident LOAD stub that restores the fastloader if a cartridge overwrote RAM `$0400-$07FF`, then falls back to the original LOAD;
+- the fastloader runs **directly from ROM**: nothing is copied to RAM, so programs that use RAM `$0400-$07FF` (e.g. CONCERTO) are not disturbed, and the fast LOAD keeps working after them. It keeps its variables in zero page `$02-$17` and restores them (and the registers) afterwards;
+- adds a small boot stub and a few shared KERNAL-resident stubs in free KERNAL space ($AA fill); the normal `boot_cartridge` check of bank 32 stays untouched, so **other cartridges still work**;
 - changes only the 7-character build id (`FAST` + the first 3 characters of the original). The version number (e.g. R49) is **not** changed, so it never impersonates another release. The CX16 update tool will see it as different and let you flash it.
 
 Flash the resulting `FASTROM-R49.BIN` to the system ROM (512 KB). Keep your original ROM to restore.
 
-Limitation: a cartridge that resets all KERNAL vectors (RESTOR) removes the fastloader until the next reset; normal LOAD keeps working.
+Note: `EPYX16.BIN` cartridge keeps a small resident block in RAM `$0400-$07FF` - any software that uses these address may have issues with the fastload cart. The altered mainboard ROM variant does not suffer from that problem. 
 
 ## Disclaimer
 
